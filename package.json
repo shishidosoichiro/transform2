@@ -24,5 +24,16 @@
   "bugs": {
     "url": "https://github.com/shishidosoichiro/transform2/issues"
   },
-  "homepage": "https://github.com/shishidosoichiro/transform2#readme"
+  "homepage": "https://github.com/shishidosoichiro/transform2#readme",
+  "devDependencies": {
+    "array-stream": "git+https://github.com/shishidosoichiro/array-stream.git",
+    "chai": "^3.5.0",
+    "coveralls": "^2.11.12",
+    "istanbul": "^0.4.4",
+    "mocha": "^3.0.2"
+  },
+  "dependencies": {
+    "es6-promisify": "^4.1.0",
+    "lodash": "^4.15.0"
+  }
 }

@@ -1,98 +1,15 @@
 'use strict';
 
-const stream = require('stream');
-const Transform = stream.Transform;
+const Stream = require('stream');
+const Transform = Stream.Transform;
 const util = require('util');
 
-const promisify = require('lib/promisify');
+const promisify = require('es6-promisify');
 
 /**
 
 Transform2
 ==========
-
-Usage
------
-
-```js
-const fs = require('fs');
-const t = require('transform2');
-const YAML = require('yamljs');
-const stringify = YAML.stringify.bind(YAML);
-
-fs.readFile('/path/to/file')
-
-// normal functions are available as transform.
-.pipe(t(String))
-.pipe(t(YAML.parse))
-
-.pipe(t(function(data){
-	// If some problem occurs, throw error.
-	throw new TypeError('type error.');
-
-	// or return rejected Promise.
-	return Promise.reject(new TypeError('type error.'));
-
-	// or execute 'throw' with it.
-	this.throw(new TypeError('type error.'));
-
-
-	// return transformed data.
-	return transformed;
-
-	// or return resolved Promise.
-	return Promise.resolve(transformed);
-
-	// or push it.
-	this.push(transformed);
-
-
-	// If return undefined, not push data.
-	return;
-}))
-
-// transform function shorthand.
-.pipe(stringify)
-.pipe(Buffer)
-
-// If some error occurs in a Transform2's transform function,
-//
-//
-// ex) If TypeError, log errors and continue.
-.catch(TypeError, function(e){
-	log(e)
-})
-// ex) if other errors, send mail to 'shishidosoichiro@gmail.com'.
-.catch(mailTo('shishidosoichiro@gmail.com'))
-
-// Node.js Stream is available.
-.pipe(fs.writeFile.bind(fs, '/other/path/to/file'))
-
-```
-
-Constructor
------------
-
-```js
-new Transform(Object options | Function transform);
-Transform(Object options | Function transform);
-```
-
-* Object options
-	* thunk: If true, `options.transform` is a thunkified function. default is `false`.
-
-* Function transform
-	transform function.
-	* return value: transformed value.
-
-
-Methods
--------
-
-### `transform.throw(Error|String)`
-
-### `transform.catch(Function(Error|String))`
-
 
 */
 module.exports = Transform2;
@@ -102,7 +19,7 @@ const defaults = {
 	thunk: false
 };
 
-function Transform2(){
+function Transform2(options){
 	if (!(this instanceof Transform2)) return new Transform2(options);
 
 	Object.assign(options, defaults);
@@ -165,12 +82,11 @@ Transform2.prototype.switchThrown = function(thrown){
 
 const pipe = Transform.prototype.pipe;
 Transform2.prototype.pipe = function(stream){
-	if (typeof stream !== 'function') throw new TypeError('1st argument should be a function.');
+	if (typeof stream !== 'function' && !(stream instanceof Stream)) throw new TypeError('1st argument should be a function or Stream.');
 
 	// If not Transform2 and Transform, wrap a function with Transform2.
 	if (!(stream instanceof Transform2) && !(stream instanceof Transform)) stream = new Transform2(stream);
 
 	pipe.call(this, stream);
 	stream.on('throw', this.switchThrown.bind(this));
-	}
 };
