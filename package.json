@@ -1,0 +1,28 @@
+{
+  "name": "transform2",
+  "version": "0.0.1",
+  "description": "stream transform promise error-handling",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shishidosoichiro/transform2.git"
+  },
+  "keywords": [
+    "stream",
+    "transform",
+    "promise",
+    "error-handling"
+  ],
+  "author": "Soichiro Shishido",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/shishidosoichiro/transform2/issues"
+  },
+  "homepage": "https://github.com/shishidosoichiro/transform2#readme"
+}
